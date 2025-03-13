@@ -1,15 +1,36 @@
-如果想创建一个git仓库，并托管到github，那么首先需要
+#步骤1：生成 SSH 密钥
+ssh-keygen -t ed25519 -C "rlinda@example.com"  # 替换为你的 GitHub 绑定邮箱
+
+#步骤2：将公钥添加到 GitHub
+cat ~/.ssh/id_ed25519.pub  # 输出内容全选复制
+#登录 GitHub → Settings → SSH and GPG keys → New SSH key,
+#Title：填写描述（如 MyLaptop）
+#Key：粘贴复制的公钥内容 → Add SSH key
+
+
+
+
+#以上2个步骤做一次就行了
+#每次创建新的仓库，完成以下4个步骤
+
+
+
+#步骤3：创建本地仓库
+#首先进入要托管到github的目录（仓库），进入后执行以下命令：
 git init
-随便创建一份文件（例如touch 1.txt）
-git remote add origin https://github.com/你的用户名/仓库名.git
+#随便创建一份文件（例如touch 1.txt），随后
 git add .
 git commit -m "这里随便写什么都行"
-git push --set-upstream origin main
 
+#步骤4：修改远程仓库地址为 SSH 协议
+git remote set-url origin git@github.com:用户名/仓库名.git
 
-这之后，每次本地仓库更新，只需要
-git add .
-git commit -m "这里随便写什么都行"
-git push
-就行了
+#步骤5：创建github仓库
+在https://github.com/new页面创建仓库
+1.填仓库名
+2.仓库可见性勾选为Public
+3.点击Create repository按钮
 
+#步骤6：测试 SSH 连接并推送
+ssh -T git@github.com  # 应返回 "You've successfully authenticated"
+git push --set-upstream origin master  # 无需输入密码
